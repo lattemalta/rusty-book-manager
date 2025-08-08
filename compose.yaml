@@ -1,0 +1,31 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+      network: host
+    ports:
+      - 8080:${PORT}
+
+  redis:
+    image: redis:alpine
+    ports:
+      - ${REDIS_PORT_OUTER}:${REDIS_PORT_INNER}
+  
+  postgres:
+    image: postgres:15
+    command: postgres -c log_destination=stderr -c log_statement=all -c log_connections=on -c log_disconnections=on
+    ports:
+      - ${DATABASE_PORT_OUTER}:${DATABASE_PORT_INNER}
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+
+volumes:
+  db:
+    driver: local
