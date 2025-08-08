@@ -37,14 +37,6 @@ dependencies = ["before-build"]
 command = "cargo"
 args = ["run", "${@}"]
 
-[tasks.test]
-extend = "set-env-local"
-install_crate = {crate_name = "cargo-nextest", binary = "cargo", test_arg = ["nextest", "--help"]}
-command = "cargo"
-args = [
-    "nextest", "run", "--workspace", "--status-level", "all", "--test-threads=1",  
-]
-
 [tasks.compose]
 extend = "set-env-docker"
 command = "docker"
@@ -69,3 +61,29 @@ args = ["compose", "down"]
 extend = "set-env-docker"
 command = "docker"
 args = ["compose", "down", "-v"]
+
+[tasks.fmt]
+extend = "set-env-local"
+command = "cargo"
+args = ["fmt", "--all", "${@}"]
+
+[tasks.clippy]
+extend = "set-env-local"
+command = "cargo"
+args = ["clippy", "--all", "--all-targets", "${@}"]
+
+[tasks.test]
+extend = "set-env-local"
+install_crate = {crate_name = "cargo-nextest", binary = "cargo", test_arg = ["nextest", "--help"]}
+command = "cargo"
+args = [
+    "nextest", "run", "--workspace", "--status-level", "all", "--test-threads=1",  
+]
+
+[tasks.clippy-ci]
+dependencies = ["before-build"]
+run_task = "clippy"
+
+[tasks.test-ci]
+dependencies = ["before-build"]
+run_task = "test"
