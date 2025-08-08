@@ -1,11 +1,12 @@
 name: CI for book
 on:
   push:
-    branches: [main]
-    pull_request:
-      paths-ignore:
-        - "README.md"
-        - "frontend/**"
+    branches: [master]
+  pull_request:
+    branches: [master]
+    paths-ignore:
+      - "README.md"
+      - "frontend/**"
 
 jobs:
   check:
