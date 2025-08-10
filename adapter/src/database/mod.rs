@@ -1,5 +1,5 @@
 use shared::config::DatabaseConfig;
-use sqlx::{postgres::PgConnectOptions, PgPool};
+use sqlx::{PgPool, postgres::PgConnectOptions};
 
 fn make_pg_connect_options(cfg: &DatabaseConfig) -> PgConnectOptions {
     PgConnectOptions::new()
