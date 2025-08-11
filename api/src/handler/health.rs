@@ -12,3 +12,9 @@ pub async fn health_check_db(State(registry): State<AppRegistry>) -> StatusCode 
         StatusCode::INTERNAL_SERVER_ERROR
     }
 }
+
+#[tokio::test]
+async fn test_health_check() {
+    let status_code = health_check().await;
+    assert_eq!(status_code, StatusCode::OK);
+}
