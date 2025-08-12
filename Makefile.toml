@@ -47,8 +47,19 @@ dependencies = ["before-build"]
 command = "cargo"
 args = ["build", "${@}"]
 
+[tasks.check]
+extend = "set-env-local"
+dependencies = ["before-build"]
+command = "cargo"
+args = ["check"]
 
 # 開発補助用のタスク群
+[tasks.watch]
+extend = "set-env-local"
+dependencies = ["before-build"]
+run_task = [{ name = ["fmt", "clippy", "test"] }]
+watch = true
+
 [tasks.fmt]
 extend = "set-env-local"
 command = "cargo"
