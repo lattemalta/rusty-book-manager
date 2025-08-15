@@ -26,6 +26,8 @@ derive-new = "0.6.0"
 uuid = {version = "1.4.0", features = ["v4", "serde"] }
 serde = {version = "1.0.174", features = ["derive"]}
 thiserror = "1.0.44"
+strum = {version = "0.26.2", features = ["derive"]}
+tracing = {version = "0.1.37", features = ["log"]}
 
 [dependencies]
 adapter.workspace = true
@@ -36,3 +38,6 @@ anyhow.workspace = true
 axum.workspace = true
 sqlx.workspace = true
 tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber = {version = "0.3.18", features = ["env-filter", "json"]}
+tower-http = {version = "0.5.0", features = ["cors", "trace"]}
