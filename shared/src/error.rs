@@ -2,6 +2,7 @@ use axum::{http::StatusCode, response::IntoResponse};
 use sqlx;
 use thiserror::Error;
 use tracing;
+use uuid;
 
 #[derive(Error, Debug)]
 pub enum AppError {
@@ -11,6 +12,8 @@ pub enum AppError {
     EntityNotFound(String),
     #[error("データベース処理中にエラーが発生しました")]
     SpecificOperationError(#[source] sqlx::Error),
+    #[error("{0}")]
+    ConvertToUuidError(#[from] uuid::Error),
 }
 
 impl IntoResponse for AppError {
@@ -18,6 +21,7 @@ impl IntoResponse for AppError {
         let status_code = match self {
             AppError::UnprocessableEntity(_) => StatusCode::UNPROCESSABLE_ENTITY,
             AppError::EntityNotFound(_) => StatusCode::NOT_FOUND,
+            AppError::ConvertToUuidError(_) => StatusCode::BAD_REQUEST,
             e @ AppError::SpecificOperationError(_) => {
                 tracing::error!(
                     error.cause_chain = ?e,
